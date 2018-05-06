@@ -11,7 +11,6 @@ public class RcstoreApplicationTests {
 
 	@Test
 	public void contextLoads() {
-		//this is a circle ci test!
 	}
 
 }
