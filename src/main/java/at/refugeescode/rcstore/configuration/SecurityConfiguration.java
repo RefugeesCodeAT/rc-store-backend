@@ -2,6 +2,7 @@ package at.refugeescode.rcstore.configuration;
 
 import at.refugeescode.rcstore.security.UserDetailsServiceImp;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -24,8 +25,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .anyRequest().fullyAuthenticated()
                 .and()
-                .formLogin().loginPage("/login").failureUrl("/login?error").permitAll()
+                .httpBasic()
                 .and()
+                .csrf().disable()
                 .logout().permitAll();
     }
 
