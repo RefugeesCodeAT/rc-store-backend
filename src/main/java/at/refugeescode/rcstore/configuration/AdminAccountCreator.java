@@ -3,6 +3,7 @@ package at.refugeescode.rcstore.configuration;
 import at.refugeescode.rcstore.models.User;
 import at.refugeescode.rcstore.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -13,17 +14,18 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+@Log
 @Configuration
 @RequiredArgsConstructor
 public class AdminAccountCreator {
 
-    @Value("${ADMIN_FIRST_NAME}")
+    @Value("${admin.first.name}")
     private String adminFirstName;
-    @Value("${ADMIN_LAST_NAME}")
+    @Value("${admin.last.name}")
     private String adminLastName;
-    @Value("${ADMIN_EMAIL}")
+    @Value("${admin.email}")
     private String adminEmail;
-    @Value("${ADMIN_PASSWORD}")
+    @Value("${admin.password}")
     private String adminPassword;
 
     private final UserRepository userRepository;
@@ -38,6 +40,7 @@ public class AdminAccountCreator {
             }
             User admin = createAdmin();
             userRepository.save(admin);
+            log.info("Admin account created and saved.");
         };
     }
 
