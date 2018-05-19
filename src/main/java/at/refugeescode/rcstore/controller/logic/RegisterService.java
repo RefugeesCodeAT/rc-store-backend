@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -15,20 +14,21 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class RegisterService {
 
-    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    public User register(User newUser) {
-        Optional<User> optionalUser = userRepository.findOneByEmail(newUser.getEmail());
-        if (optionalUser.isPresent()) {
-            return optionalUser.get();
-        }
-        setPasswordAndRoles(newUser);
-        return userRepository.save(newUser);
+    public void register(User newUser) {
+        encodePassword(newUser);
+        setRolesToUser(newUser);
+        userRepository.save(newUser);
     }
 
-    private void setPasswordAndRoles(User newUser) {
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+    private void encodePassword(User newUser) {
+        String encodedPassword = passwordEncoder.encode(newUser.getPassword());
+        newUser.setPassword(encodedPassword);
+    }
+
+    private void setRolesToUser(User newUser) {
         Set<String> userRoles = Stream.of("ROLE_USER").collect(Collectors.toSet());
         newUser.setRoles(userRoles);
     }
