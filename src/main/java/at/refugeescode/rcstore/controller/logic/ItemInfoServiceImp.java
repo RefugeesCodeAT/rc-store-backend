@@ -13,7 +13,6 @@ import java.util.Optional;
 public class ItemInfoServiceImp implements ItemInfoService {
 
     private final ItemRepository itemRepository;
-    @Getter
     private Item item;
 
     @Override
@@ -24,6 +23,11 @@ public class ItemInfoServiceImp implements ItemInfoService {
             return "item";
         }
         return "redirect:/";
+    }
+
+    @Override
+    public Item getItem() {
+        return item;
     }
 
 }

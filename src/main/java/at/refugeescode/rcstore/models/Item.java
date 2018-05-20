@@ -22,6 +22,7 @@ public class Item {
     private int borrowingLimit;
     private Boolean borrowed;
     private String bookedBy;
+    private LocalDateTime borrowingDate;
     private LocalDateTime dueDate;
 
 }
