@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -17,7 +18,16 @@ public class RegisterService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    public void register(User newUser) {
+    public String controlUser(User newUser){
+        Optional<User> optionalUser = userRepository.findOneByEmail(newUser.getEmail());
+        if (optionalUser.isPresent()) {
+            return "redirect:/register";
+        }
+        register(newUser);
+        return "redirect:/login";
+    }
+
+    private void register(User newUser) {
         encodePassword(newUser);
         setRolesToUser(newUser);
         userRepository.save(newUser);

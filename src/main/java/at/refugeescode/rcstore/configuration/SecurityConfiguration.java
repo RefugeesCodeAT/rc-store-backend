@@ -23,9 +23,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .httpBasic()
+                .and()
+                .formLogin().loginPage("/login").failureUrl("/login?error").permitAll()
                 .and()
                 .csrf().disable()
                 .logout().permitAll();
