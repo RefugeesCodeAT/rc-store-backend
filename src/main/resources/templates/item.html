@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Item Information</title>
+</head>
+<body>
+<div th:object="${item}">
+    <p>Name: <span th:text="${item.name}">Item name</span>.</p>
+    <p>Description: <span th:text="${item.description}">Item description</span>.</p>
+    <p>Borrowing limit: <span th:text="${item.borrowingLimit}">Item borrowing limit</span>.</p>
+    <div th:if="${item.borrowed} == true">
+        <p>Borrower E-mail: <span th:text="${item.bookedBy}">Item booked by</span>.</p>
+        <p>Item return date date: <span th:text="${item.dueDate}">Item due date</span>.</p>
+    </div>
+    <!--<div th:if="${item.borrowed} == false">-->
+        <!--&lt;!&ndash; book button her&ndash;&gt;-->
+    <!--</div>-->
+</div>
+</body>
+</html>
