@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Item Information</title>
+</head>
+<body>
+<div th:object="${item}">
+    <p th:if="${param.error}" class="alert alert-error">There was an error, please try again</p>
+    <p>Name: <span th:text="${item.name}">Item name</span>.</p>
+    <p>Description: <span th:text="${item.description}">Item description</span>.</p>
+    <p>Borrowing limit: <span th:text="${item.borrowingLimit}">Item borrowing limit</span>.</p>
+    <div th:if="${item.borrowed}">
+        <p>Borrower E-mail: <span th:text="${item.bookedBy}">Item booked by</span>.</p>
+        <p>Return date: <span th:text="${item.dueDate}">Item due date</span>.</p>
+        <p>Borrowing date: <span th:text="${item.borrowingDate}">Item borrowing date</span>.</p>
+    </div>
+    <form th:th:unless="${item.borrowed}" th:action="@{/bookitem}" th:object="${item}" method="post">
+        <input type="hidden" th:value="${item.id}" name="id"/>
+        <input type="hidden" th:value="${item.name}" name="name"/>
+        <input type="hidden" th:value="${item.description}" name="description"/>
+        <input type="hidden" th:value="${item.borrowingLimit}" name="borrowingLimit"/>
+        <p>
+        <label>Date of borrowing: </label>
+            <input th:field="*{borrowingDate}" th:text="${#temporals.format(now, 'dd/MMM/yyyy HH:mm')}">
+        </p>
+        <p>
+            <label>Date of return: </label>
+            <input th:field="*{dueDate}" th:text="${#temporals.format(now, 'dd/MMM/yyyy HH:mm')}">
+        </p>
+            <button type="submit">Book</button>
+    </form>
+</div>
+</body>
+</html>

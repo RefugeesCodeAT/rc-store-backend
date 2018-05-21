@@ -7,22 +7,24 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
 @Document
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Item {
 
     @Id
     private String id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
-    private Set<String> roles = new HashSet<>();
+    private String name;
+    private String description;
+    private byte[] image;
+    private int borrowingLimit;
+    private Boolean borrowed;
+    private String bookedBy;
+    private LocalDateTime borrowingDate;
+    private LocalDateTime dueDate;
 
 }
