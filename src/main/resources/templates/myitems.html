@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>All items</title>
+</head>
+<body>
+<a href="/">Go Home</a><br>
+<table th:if="${not #lists.isEmpty(items)}">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Borrowing Date</th>
+        <th>Due Date</th>
+        <th> </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${items}">
+        <td th:text="${item.name}">Book (Java)</td>
+        <td th:text="${item.description}">java 8 manual</td>
+        <td th:text="${item.borrowingDate}">2018/02/11</td>
+        <td th:text="${item.dueDate}">2018/02/21</td>
+        <td>
+            <form th:action="@{/myitems/{id} (id=${item.id})}" method="GET">
+                <input type="submit" id="return" value="Return" class="btn btn-primary"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
