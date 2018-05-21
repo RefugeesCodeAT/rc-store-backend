@@ -20,8 +20,8 @@
         <td th:text="${item.description}">Item description</td>
         <td th:text="${item.borrowingLimit}">Item borrowing limit</td>
         <td>
-            <form th:action="@{/iteminfo/{id}(id=${item.id})}" method="GET">
-                <button name="action" type="submit">View</button>
+            <form th:action="@{/iteminfo/{id} (id=${item.id})}" method="GET">
+                <input type="submit" id="view" value="View" class="btn btn-primary"/>
             </form>
         </td>
     </tr>

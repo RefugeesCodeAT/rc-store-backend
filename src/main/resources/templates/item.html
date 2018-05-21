@@ -16,15 +16,19 @@
         <p>Borrowing date: <span th:text="${item.borrowingDate}">Item borrowing date</span>.</p>
     </div>
     <form th:th:unless="${item.borrowed}" th:action="@{/bookitem}" th:object="${item}" method="post">
-        <!--<input type="hidden" th:value="${item.id}" name="id"/>-->
-        <!--<input type="hidden" th:value="${item.name}" name="name"/>-->
-        <!--<input type="hidden" th:value="${item.description}" name="description"/>-->
-        <!--<input type="hidden" th:value="${item.borrowingLimit}" name="borrowingLimit"/>-->
+        <input type="hidden" th:value="${item.id}" name="id"/>
+        <input type="hidden" th:value="${item.name}" name="name"/>
+        <input type="hidden" th:value="${item.description}" name="description"/>
+        <input type="hidden" th:value="${item.borrowingLimit}" name="borrowingLimit"/>
+        <p>
         <label>Date of borrowing: </label>
-        <input th:field="*{borrowingDate}" th:text="${#temporals.format(now, 'dd/MMM/yyyy HH:mm')}">
-        <label>Date of return: </label>
-        <input th:field="*{dueDate}" th:text="${#temporals.format(now, 'dd/MMM/yyyy HH:mm')}">
-        <button type="submit">Book</button>
+            <input th:field="*{borrowingDate}" th:text="${#temporals.format(now, 'dd/MMM/yyyy HH:mm')}">
+        </p>
+        <p>
+            <label>Date of return: </label>
+            <input th:field="*{dueDate}" th:text="${#temporals.format(now, 'dd/MMM/yyyy HH:mm')}">
+        </p>
+            <button type="submit">Book</button>
     </form>
 </div>
 </body>
