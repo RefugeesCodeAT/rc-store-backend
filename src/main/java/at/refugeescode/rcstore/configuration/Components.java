@@ -15,16 +15,16 @@ public class Components {
         return new Java8TimeDialect();
     }
 
-//    @Bean
-//    ApplicationRunner applicationRunner(ItemRepository itemRepository) {
-//        return args -> {
-//            Item item = new Item();
-//            item.setName("name");
-//            item.setDescription("description");
-//            item.setBorrowed(false);
-//            item.setBorrowingLimit(15);
-//            itemRepository.save(item);
-//        };
-//    }
+    @Bean
+    ApplicationRunner applicationRunner(ItemRepository itemRepository) {
+        return args -> {
+            Item item = new Item();
+            item.setName("name");
+            item.setDescription("description");
+            item.setBorrowed(false);
+            item.setBorrowingLimit(15);
+            itemRepository.save(item);
+        };
+    }
 
 }

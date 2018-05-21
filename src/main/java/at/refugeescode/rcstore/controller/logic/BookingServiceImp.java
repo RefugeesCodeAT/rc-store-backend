@@ -18,9 +18,7 @@ public class BookingServiceImp implements BookingService {
     @Override
     public String book(Item item) {
         if (isWithinBorrowingLimit(item)) {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            item.setBookedBy(authentication.getName());
-            item.setBorrowed(true);
+            setBorrowingInfo(item);
             itemRepository.save(item);
         }
         return "redirect:/";
@@ -28,6 +26,12 @@ public class BookingServiceImp implements BookingService {
 
     private boolean isWithinBorrowingLimit(Item item) {
         return Duration.between(item.getBorrowingDate(), item.getDueDate()).abs().toDays() <= item.getBorrowingLimit();
+    }
+
+    private void setBorrowingInfo(Item item) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        item.setBookedBy(authentication.getName());
+        item.setBorrowed(true);
     }
 
 }

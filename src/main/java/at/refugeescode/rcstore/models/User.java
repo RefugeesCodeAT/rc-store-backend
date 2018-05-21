@@ -1,6 +1,7 @@
 package at.refugeescode.rcstore.models;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -10,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Builder
 @Document
 @NoArgsConstructor
 @AllArgsConstructor
