@@ -24,11 +24,12 @@ public class Components {
             if (itemList.size() > 0) {
                 return;
             }
-            Item item = new Item();
-            item.setName("name");
-            item.setDescription("description");
-            item.setBorrowed(false);
-            item.setBorrowingLimit(15);
+            Item item = Item.builder()
+                    .name("name")
+                    .description("description")
+                    .borrowed(false)
+                    .borrowingLimit(15)
+                    .build();
             itemRepository.save(item);
         };
     }
