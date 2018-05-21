@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <meta charset="UTF-8">
     <title>Login</title>
 </head>
 <body>
 <div class="content">
     <p th:if="${param.error}" class="alert alert-error">There was an error, please try again</p>
+    <p th:if="${param.logout}" class="alert alert-error">You have been Logged out.</p>
     <h2>Login with Username and Password</h2>
 
     <form action="/register" method="get">
