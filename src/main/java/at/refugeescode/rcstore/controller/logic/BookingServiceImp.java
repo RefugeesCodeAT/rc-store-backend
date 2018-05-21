@@ -24,11 +24,11 @@ public class BookingServiceImp implements BookingService {
         return "redirect:/";
     }
 
-    private boolean isWithinBorrowingLimit(Item item) {
+    boolean isWithinBorrowingLimit(Item item) {
         return Duration.between(item.getBorrowingDate(), item.getDueDate()).abs().toDays() <= item.getBorrowingLimit();
     }
 
-    private void setBorrowingInfo(Item item) {
+    void setBorrowingInfo(Item item) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         item.setBookedBy(authentication.getName());
         item.setBorrowed(true);
