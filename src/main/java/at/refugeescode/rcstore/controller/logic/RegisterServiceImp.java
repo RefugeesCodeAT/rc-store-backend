@@ -37,13 +37,11 @@ public class RegisterServiceImp implements RegisterService {
     }
 
     private void createNewUserFrom(UserDto userDto) {
-        User newUser = new User();
-        newUser.setFirstName(userDto.getFirstName());
-        newUser.setLastName(userDto.getLastName());
-        newUser.setEmail(userDto.getEmail());
-        newUser.setPassword(userDto.getPassword());
-        encodePassword(newUser);
-        setRolesToUser(newUser);
+        User newUser = User.builder().firstName(userDto.getFirstName())
+                .lastName(userDto.getLastName())
+                .email(userDto.getEmail())
+                .password(userDto.getPassword())
+                .build();
         userRepository.save(newUser);
     }
 
