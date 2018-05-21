@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>All items</title>
+</head>
+<body>
+<table th:if="${not #lists.isEmpty(items)}">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Borrowing Limit (Days)</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${items}">
+        <td th:text="${item.name}">Item name</td>
+        <td th:text="${item.description}">Item description</td>
+        <td th:text="${item.borrowingLimit}">Item borrowing limit</td>
+        <td>
+            <form th:action="@{/iteminfo/{id} (id=${item.id})}" method="GET">
+                <input type="submit" id="view" value="View" class="btn btn-primary"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
