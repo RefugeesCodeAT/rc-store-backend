@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Item</title>
+</head>
+<body>
+<a href="/">Go Home</a><br>
+<div class="content">
+    <h3>Add New Item</h3>
+    <form name="form" th:action="@{/additem}" method="POST">
+        <fieldset>
+            <input type="text" name="name" placeholder="Item Name" autofocus="autofocus"/>
+            <input type="text" name="description" placeholder="Item Description" />
+            <label for="image"> Item Image</label>
+            <input type="file" name="image" id="image" accept="image/*" />
+            <input type="number" name="borrowinglimit" min="1" max="31" placeholder="Borrowing Limit" />
+        </fieldset>
+        <input type="submit" id="additem" value="Add Item" class="btn btn-primary"/>
+    </form>
+</div>
+</body>
+</html>
