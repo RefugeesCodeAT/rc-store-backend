@@ -16,14 +16,14 @@ public class Register {
 
     private final RegisterService registerService;
 
-    @GetMapping
-    public String get() {
-        return "register";
-    }
-
     @ModelAttribute("newUser")
     UserDto newUser() {
         return new UserDto();
+    }
+
+    @GetMapping
+    public String get() {
+        return "register";
     }
 
     @PostMapping
