@@ -25,7 +25,7 @@ public class RegisterServiceImp implements RegisterService {
         if (optionalUser.isPresent()) {
             return "redirect:/register";
         }
-        if (!userDto.getPassword().equals(userDto.getMatchingPassword())){
+        if (!userDto.getPassword().equals(userDto.getMatchingPassword())) {
             return "redirect:/register";
         }
         register(userDto);
@@ -40,19 +40,18 @@ public class RegisterServiceImp implements RegisterService {
         User newUser = User.builder().firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
                 .email(userDto.getEmail())
-                .password(userDto.getPassword())
+                .password(encode(userDto.getPassword()))
+                .roles(setRolesToUser())
                 .build();
         userRepository.save(newUser);
     }
 
-    private void encodePassword(User newUser) {
-        String encodedPassword = passwordEncoder.encode(newUser.getPassword());
-        newUser.setPassword(encodedPassword);
+    private String encode(String password) {
+        return passwordEncoder.encode(password);
     }
 
-    private void setRolesToUser(User newUser) {
-        Set<String> userRoles = Stream.of("ROLE_USER").collect(Collectors.toSet());
-        newUser.setRoles(userRoles);
+    private Set<String> setRolesToUser() {
+        return Stream.of("ROLE_USER").collect(Collectors.toSet());
     }
 
 }

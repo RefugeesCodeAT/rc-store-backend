@@ -1,13 +1,11 @@
 package at.refugeescode.rcstore.models;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
-@RequiredArgsConstructor
 public class UserDto {
 
     @NotNull
@@ -28,4 +26,3 @@ public class UserDto {
     private String matchingPassword;
 
 }
-
