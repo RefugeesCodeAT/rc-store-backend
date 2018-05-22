@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Borrowing Log</title>
+</head>
+<body>
+<a href="/">Go Home</a><br>
+<h2>Borrowing Log</h2>
+<table th:if="${not #lists.isEmpty(borrows)}">
+    <thead>
+    <tr>
+        <th>Borrower Name</th>
+        <th>Item Name</th>
+        <th>Description</th>
+        <th>Return Date</th>
+        <th>From Date</th>
+        <th>Returned</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="borrow : ${borrows}">
+        <td th:text="${borrow.borrowerName}">Sadra</td>
+        <td th:text="${borrow.itemName}">Book (Java)</td>
+        <td th:text="${borrow.itemDescription}">java 8 manual</td>
+        <td th:text="${borrow.returnDate}">2018/02/21</td>
+        <td th:text="${borrow.fromDate}">2018/02/11</td>
+        <td th:text="${borrow.isReturned}">true</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
