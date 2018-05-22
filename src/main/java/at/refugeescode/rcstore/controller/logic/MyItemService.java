@@ -8,6 +8,6 @@ public interface MyItemService {
 
     List<Item> getMyItems();
 
-    String returnItem(String id);
+    void returnItem(String id);
 
 }

@@ -25,6 +25,7 @@ public class LogEntry {
     private String idOfBorrowedItem;
     private LocalDateTime dateOfBorrowing;
     private LocalDateTime dateOfReturn;
+    private Boolean operationOnGoing;
     private int daysToReturnDate;
 
 }

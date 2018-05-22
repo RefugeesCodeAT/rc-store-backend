@@ -34,7 +34,8 @@ public class MyItems {
     @GetMapping("/{id}")
     @RolesAllowed("ROLE_USER")
     public String returnItem(@PathVariable String id) {
-        return myItemService.returnItem(id);
+        myItemService.returnItem(id);
+        return "redirect:/myitems";
     }
 
 }

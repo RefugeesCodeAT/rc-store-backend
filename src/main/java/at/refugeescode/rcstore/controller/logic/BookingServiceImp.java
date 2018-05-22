@@ -5,7 +5,7 @@ import at.refugeescode.rcstore.models.LogEntry;
 import at.refugeescode.rcstore.models.User;
 import at.refugeescode.rcstore.persistence.ItemRepository;
 import at.refugeescode.rcstore.persistence.LogEntryRepository;
-import at.refugeescode.rcstore.security.UserPrincipal;
+import at.refugeescode.rcstore.security.LoggedInUserUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +19,7 @@ public class BookingServiceImp implements BookingService {
 
     private final ItemRepository itemRepository;
     private final LogEntryRepository logEntryRepository;
+    private final LoggedInUserUtility loggedInUserUtility;
 
     @Override
     public String book(Item item) {
@@ -41,7 +42,7 @@ public class BookingServiceImp implements BookingService {
     }
 
     private void createLogEntry(Item item) {
-        User user = getCurrentUser();
+        User user = loggedInUserUtility.getLoggedOnUser();
         LogEntry logEntry = LogEntry.builder()
                 .borrowerName(user.getFirstName() + " " + user.getLastName())
                 .borrowerId(user.getId())
@@ -50,14 +51,9 @@ public class BookingServiceImp implements BookingService {
                 .idOfBorrowedItem(item.getId())
                 .dateOfBorrowing(item.getBorrowingDate())
                 .dateOfReturn(item.getDueDate())
+                .operationOnGoing(true)
                 .build();
         logEntryRepository.save(logEntry);
-    }
-
-    private User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        return userPrincipal.getUser();
     }
 
 }
