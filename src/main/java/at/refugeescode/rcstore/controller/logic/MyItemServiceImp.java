@@ -24,8 +24,8 @@ public class MyItemServiceImp implements MyItemService {
 
     @Override
     public List<Item> getMyItems() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return itemRepository.findAllByBookedBy(authentication.getName());
+        User user = loggedInUserUtility.getLoggedOnUser();
+        return itemRepository.findAllByBookedBy(user.getEmail());
     }
 
     @Override
@@ -40,8 +40,13 @@ public class MyItemServiceImp implements MyItemService {
     }
 
     private void logReturnEntryFor(Item item) {
+        LogEntry logEntry = createLogEntry(item);
+        logEntryRepository.save(logEntry);
+    }
+
+    LogEntry createLogEntry(Item item) {
         User user = loggedInUserUtility.getLoggedOnUser();
-        LogEntry logEntry = LogEntry.builder()
+        return LogEntry.builder()
                 .borrowerName(user.getFirstName() + " " + user.getLastName())
                 .borrowerId(user.getId())
                 .nameOfBorrowedItem(item.getName())
@@ -51,7 +56,6 @@ public class MyItemServiceImp implements MyItemService {
                 .dateOfReturn(LocalDateTime.now())
                 .operationOnGoing(false)
                 .build();
-        logEntryRepository.save(logEntry);
     }
 
 }
