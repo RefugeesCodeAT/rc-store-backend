@@ -41,10 +41,6 @@ class RegisterServiceImpTest {
     @Test
     void createNewUser() {
         UserDto newUserDto = createNewUserDto();
-        Optional<User> optionalUser = userRepository.findOneByEmail(newUserDto.getEmail());
-        if (optionalUser.isPresent()){
-            userRepository.delete(optionalUser.get());
-        }
         newUserDto.setMatchingPassword("same");
 
         assertFalse(userRepository.findOneByEmail(newUserDto.getEmail()).isPresent());
@@ -55,11 +51,6 @@ class RegisterServiceImpTest {
     @Test
     void passwordsDoesntMatch() {
         UserDto newUserDto = createNewUserDto();
-        Optional<User> optionalUser = userRepository.findOneByEmail(newUserDto.getEmail());
-        if (optionalUser.isPresent()){
-            userRepository.delete(optionalUser.get());
-        }
-        userRepository.delete(optionalUser.get());
         newUserDto.setMatchingPassword("different");
 
         assertFalse(userRepository.findOneByEmail(newUserDto.getEmail()).isPresent());
@@ -67,15 +58,21 @@ class RegisterServiceImpTest {
         assertEquals("redirect:/register", actualReturn);
     }
 
-
-
     private UserDto createNewUserDto() {
         UserDto newUserDto = new UserDto();
         newUserDto.setEmail("trythis@rc.com");
         newUserDto.setFirstName("test");
         newUserDto.setLastName("user");
         newUserDto.setPassword("same");
+        findAndDelete(newUserDto);
         return newUserDto;
+    }
+
+    private void findAndDelete(UserDto newUserDto) {
+        Optional<User> optionalUser = userRepository.findOneByEmail(newUserDto.getEmail());
+        if (optionalUser.isPresent()) {
+            userRepository.delete(optionalUser.get());
+        }
     }
 
 }
