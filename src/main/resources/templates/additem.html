@@ -8,13 +8,13 @@
 <a href="/">Go Home</a><br>
 <div class="content">
     <h3>Add New Item</h3>
-    <form name="form" th:action="@{/additem}" method="POST">
+    <form name="form" th:action="@{/additem}" th:object="${newItem}" method="POST">
         <fieldset>
-            <input type="text" name="name" placeholder="Item Name" autofocus="autofocus"/>
-            <input type="text" name="description" placeholder="Item Description" />
+            <input type="text"  th:field="*{name}" name="name" placeholder="Item Name" autofocus="autofocus"/>
+            <input type="text"  th:field="*{description}" name="description" placeholder="Item Description" />
             <label for="image"> Item Image</label>
-            <input type="file" name="image" id="image" accept="image/*" />
-            <input type="number" name="borrowinglimit" min="1" max="31" placeholder="Borrowing Limit" />
+            <input type="file"  th:field="*{image}" name="image" id="image" accept="image/*" />
+            <input type="number"  th:field="*{borrowinglimit}" name="borrowinglimit" min="1" max="31" placeholder="Borrowing Limit" />
         </fieldset>
         <input type="submit" id="additem" value="Add Item" class="btn btn-primary"/>
     </form>

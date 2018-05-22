@@ -6,7 +6,7 @@
 </head>
 <body>
 <a href="/">Go Home</a><br>
-<table th:if="${not #lists.isEmpty(items)}">
+<table th:if="${not #lists.isEmpty(myitems)}">
     <thead>
     <tr>
         <th>Name</th>
@@ -17,7 +17,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="item : ${items}">
+    <tr th:each="item : ${myitems}">
         <td th:text="${item.name}">Book (Java)</td>
         <td th:text="${item.description}">java 8 manual</td>
         <td th:text="${item.borrowingDate}">2018/02/11</td>
