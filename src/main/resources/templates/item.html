@@ -17,7 +17,7 @@
         <p>Borrower E-mail: <span th:text="${item.bookedBy}">Item booked by</span>.</p>
         <p>Borrowing date: <span th:text="${item.borrowingDate}">Item borrowing date</span>.</p>
     </div>
-    <form th:th:unless="${item.borrowed}" th:action="@{/bookitem}" th:object="${item}" method="post">
+    <form th:unless="${item.borrowed}" th:action="@{/bookitem}" th:object="${item}" method="post">
         <input type="hidden" th:value="${item.id}" name="id"/>
         <input type="hidden" th:value="${item.name}" name="name"/>
         <input type="hidden" th:value="${item.description}" name="description"/>
