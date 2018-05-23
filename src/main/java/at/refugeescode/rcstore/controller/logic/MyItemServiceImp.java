@@ -11,49 +11,51 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BookingServiceImp implements BookingService {
+public class MyItemServiceImp implements MyItemService {
 
     private final ItemRepository itemRepository;
     private final LogEntryRepository logEntryRepository;
     private final LoggedInUserUtility loggedInUserUtility;
 
     @Override
-    public String book(Item item) {
-        if (isWithinBorrowingLimit(item)) {
-            setBorrowingInfo(item);
-            createLogEntry(item);
-            itemRepository.save(item);
-        }
-        return "redirect:/";
-    }
-
-    boolean isWithinBorrowingLimit(Item item) {
-        return Duration.between(item.getBorrowingDate(), item.getDueDate()).abs().toDays() <= item.getBorrowingLimit();
-    }
-
-    void setBorrowingInfo(Item item) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        item.setBookedBy(authentication.getName());
-        item.setBorrowed(true);
-    }
-
-    private void createLogEntry(Item item) {
+    public List<Item> getMyItems() {
         User user = loggedInUserUtility.getLoggedOnUser();
-        LogEntry logEntry = LogEntry.builder()
+        return itemRepository.findAllByBookedBy(user.getEmail());
+    }
+
+    @Override
+    public void returnItem(String id) {
+        Item item = itemRepository.findById(id).get();
+        logReturnEntryFor(item);
+        item.setBorrowed(false);
+        item.setBookedBy(null);
+        item.setDueDate(null);
+        item.setBorrowingDate(null);
+        itemRepository.save(item);
+    }
+
+    private void logReturnEntryFor(Item item) {
+        LogEntry logEntry = createLogEntry(item);
+        logEntryRepository.save(logEntry);
+    }
+
+    LogEntry createLogEntry(Item item) {
+        User user = loggedInUserUtility.getLoggedOnUser();
+        return LogEntry.builder()
                 .borrowerName(user.getFirstName() + " " + user.getLastName())
                 .borrowerId(user.getId())
                 .nameOfBorrowedItem(item.getName())
                 .descriptionOfBorrowedItem(item.getDescription())
                 .idOfBorrowedItem(item.getId())
                 .dateOfBorrowing(item.getBorrowingDate())
-                .dateOfReturn(item.getDueDate())
-                .operationOnGoing(true)
+                .dateOfReturn(LocalDateTime.now())
+                .operationOnGoing(false)
                 .build();
-        logEntryRepository.save(logEntry);
     }
 
 }

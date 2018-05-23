@@ -8,13 +8,16 @@
 <a href="/">Go Home</a><br>
 <div class="content">
     <h3>Add New Item</h3>
+
     <form name="form" th:action="@{/additem}" th:object="${newItem}" enctype="multipart/form-data" method="POST">
         <fieldset>
-            <input type="text"  th:field="*{name}" name="name" placeholder="Item Name" autofocus="autofocus"/>
-            <input type="text"  th:field="*{description}" name="description" placeholder="Item Description" />
+            <input type="text" th:field="*{name}" name="name" placeholder="Item Name" autofocus="autofocus"/> <br>
+            <input type="text" th:field="*{description}" name="description" placeholder="Item Description"/> <br>
             <label for="image"> Item Image</label>
-            <input type="file"  th:field="*{image}" name="image" id="image" accept="image/*" />
-            <input type="number"  th:field="*{borrowinglimit}" name="borrowinglimit" min="1" max="31" placeholder="Borrowing Limit" />
+            <input type="file" th:field="*{image}" name="image" id="image" accept="image/*"/> <br>
+            <label for="image"> Item borrowing limit (between 1 and 31 days):</label>
+            <input type="number" th:field="*{borrowingLimit}" name="borrowingLimit" min="1" max="31"
+                   placeholder="Borrowing Limit"/> <br>
         </fieldset>
         <input type="submit" id="additem" value="Add Item" class="btn btn-primary"/>
     </form>

@@ -2,6 +2,7 @@ package at.refugeescode.rcstore.security;
 
 import at.refugeescode.rcstore.models.User;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserPrincipal implements UserDetails {
 
+    @Getter
     private User user;
 
     @Override
