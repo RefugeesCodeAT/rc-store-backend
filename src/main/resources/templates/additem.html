@@ -8,7 +8,7 @@
 <a href="/">Go Home</a><br>
 <div class="content">
     <h3>Add New Item</h3>
-    <form name="form" th:action="@{/additem}" th:object="${newItem}" method="POST">
+    <form name="form" th:action="@{/additem}" th:object="${newItem}" enctype="multipart/form-data" method="POST">
         <fieldset>
             <input type="text"  th:field="*{name}" name="name" placeholder="Item Name" autofocus="autofocus"/>
             <input type="text"  th:field="*{description}" name="description" placeholder="Item Description" />
