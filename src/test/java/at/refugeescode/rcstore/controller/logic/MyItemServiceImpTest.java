@@ -92,7 +92,6 @@ class MyItemServiceImpTest {
                 .borrowed(false)
                 .bookedBy(null)
                 .borrowingDate(null)
-                .dueDate(null)
                 .borrowingLimit(10)
                 .build();
 

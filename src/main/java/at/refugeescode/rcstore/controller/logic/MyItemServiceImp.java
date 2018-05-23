@@ -33,7 +33,6 @@ public class MyItemServiceImp implements MyItemService {
         updateLogEntry(item, user);
         item.setBorrowed(false);
         item.setBookedBy(null);
-        item.setDueDate(null);
         item.setBorrowingDate(null);
         itemRepository.save(item);
     }

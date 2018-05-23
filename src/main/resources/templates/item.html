@@ -15,7 +15,6 @@
     <p>Borrowing limit: <span th:text="${item.borrowingLimit}">Item borrowing limit</span>.</p>
     <div th:if="${item.borrowed}">
         <p>Borrower E-mail: <span th:text="${item.bookedBy}">Item booked by</span>.</p>
-        <p>Return date: <span th:text="${item.dueDate}">Item due date</span>.</p>
         <p>Borrowing date: <span th:text="${item.borrowingDate}">Item borrowing date</span>.</p>
     </div>
     <form th:th:unless="${item.borrowed}" th:action="@{/bookitem}" th:object="${item}" method="post">
