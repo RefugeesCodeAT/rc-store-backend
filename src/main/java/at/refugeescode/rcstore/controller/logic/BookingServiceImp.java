@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -22,20 +23,20 @@ public class BookingServiceImp implements BookingService {
     private final LoggedInUserUtility loggedInUserUtility;
 
     @Override
-    public String book(Item item) {
+    public void book(Item item) {
         if (isWithinBorrowingLimit(item)) {
             setBorrowingInfo(item);
             createLogEntry(item);
             itemRepository.save(item);
         }
-        return "redirect:/";
     }
 
     boolean isWithinBorrowingLimit(Item item) {
-        return Duration.between(item.getBorrowingDate(), item.getDueDate()).abs().toDays() <= item.getBorrowingLimit();
+        return Duration.between(LocalDateTime.now(), item.getDueDate()).abs().toDays() <= item.getBorrowingLimit();
     }
 
     void setBorrowingInfo(Item item) {
+        item.setBorrowingDate(LocalDateTime.now());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         item.setBookedBy(authentication.getName());
         item.setBorrowed(true);
@@ -49,7 +50,7 @@ public class BookingServiceImp implements BookingService {
                 .nameOfBorrowedItem(item.getName())
                 .descriptionOfBorrowedItem(item.getDescription())
                 .idOfBorrowedItem(item.getId())
-                .dateOfBorrowing(item.getBorrowingDate())
+                .dateOfBorrowing(LocalDateTime.now())
                 .dateOfReturn(item.getDueDate())
                 .operationOnGoing(true)
                 .build();

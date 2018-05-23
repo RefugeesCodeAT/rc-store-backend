@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head></head>
+
+<body>
+
+<div th:fragment="menu">
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/myitems}">My Items</a>
+        <a th:href="@{/additem}">Add Item</a>
+        <a th:href="@{/log}">Log</a>
+    </nav>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-package at.refugeescode.rcstore.controller.endpoints;
+package at.refugeescode.rcstore.controller.view;
 
 import at.refugeescode.rcstore.controller.logic.HomeService;
 import at.refugeescode.rcstore.models.Item;
@@ -14,7 +14,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/")
-public class Home {
+public class HomeController {
 
     private final HomeService homeService;
 

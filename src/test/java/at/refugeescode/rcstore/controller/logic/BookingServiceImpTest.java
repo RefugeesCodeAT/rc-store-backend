@@ -48,17 +48,18 @@ class BookingServiceImpTest {
     @Test
     @WithMockUser("someone")
     void setBorrowingInfo() {
+        bookingServiceImp.setBorrowingInfo(item);
+
         Item result = Item.builder()
                 .name("name")
                 .description("description")
                 .borrowed(true)
                 .bookedBy("someone")
-                .borrowingDate(LocalDateTime.of(2018, 5, 12, 0, 0))
+                .borrowingDate(item.getBorrowingDate())
                 .dueDate(LocalDateTime.of(2018, 5, 17, 0, 0))
                 .borrowingLimit(1)
                 .build();
 
-        bookingServiceImp.setBorrowingInfo(item);
         Assertions.assertEquals(item, result);
     }
 

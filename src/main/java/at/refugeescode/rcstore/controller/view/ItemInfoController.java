@@ -1,4 +1,4 @@
-package at.refugeescode.rcstore.controller.endpoints;
+package at.refugeescode.rcstore.controller.view;
 
 import at.refugeescode.rcstore.controller.logic.ItemInfoService;
 import at.refugeescode.rcstore.models.Item;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/iteminfo")
-public class ItemInfo {
+public class ItemInfoController {
 
     private final ItemInfoService itemInfoService;
 

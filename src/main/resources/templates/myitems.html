@@ -5,7 +5,9 @@
     <title>My Items</title>
 </head>
 <body>
-<a href="/">Go Home</a><br>
+<header>
+    <object th:include="fragments/navigation :: menu" th:remove="tag"></object>
+</header>
 <table th:if="${not #lists.isEmpty(myitems)}">
     <thead>
     <tr>

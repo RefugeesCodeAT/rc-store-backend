@@ -1,4 +1,4 @@
-package at.refugeescode.rcstore.controller.endpoints;
+package at.refugeescode.rcstore.controller.view;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/log")
-public class Log {
+public class LogController {
 
     //private final LogEntryRepository logEntryRepository;
 

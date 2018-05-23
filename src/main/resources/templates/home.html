@@ -5,6 +5,9 @@
     <title>All Items</title>
 </head>
 <body>
+<header>
+    <object th:include="fragments/navigation :: menu" th:remove="tag"></object>
+</header>
 <table th:if="${not #lists.isEmpty(items)}">
     <thead>
     <tr>

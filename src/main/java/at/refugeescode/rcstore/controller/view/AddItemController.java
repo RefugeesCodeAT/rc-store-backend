@@ -1,4 +1,4 @@
-package at.refugeescode.rcstore.controller.endpoints;
+package at.refugeescode.rcstore.controller.view;
 
 import at.refugeescode.rcstore.controller.logic.AddItemService;
 import at.refugeescode.rcstore.models.Item;
@@ -14,7 +14,7 @@ import javax.annotation.security.RolesAllowed;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/additem")
-public class AddItem {
+public class AddItemController {
 
     private final AddItemService addItemService;
 
