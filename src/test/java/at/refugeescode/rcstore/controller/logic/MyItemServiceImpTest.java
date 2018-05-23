@@ -4,6 +4,7 @@ import at.refugeescode.rcstore.models.Item;
 import at.refugeescode.rcstore.models.LogEntry;
 import at.refugeescode.rcstore.models.User;
 import at.refugeescode.rcstore.persistence.ItemRepository;
+import at.refugeescode.rcstore.persistence.LogEntryRepository;
 import at.refugeescode.rcstore.security.LoggedInUserUtility;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -25,13 +26,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class MyItemServiceImpTest {
 
     @Autowired
+    private LogEntryRepository logEntryRepository;
+    @Autowired
     private MyItemServiceImp myItemServiceImp;
     @Autowired
     private ItemRepository itemRepository;
     @MockBean
     private LoggedInUserUtility loggedInUserUtility;
+
     private static Item item;
     private static User user;
+    private static LogEntry logEntry;
 
     @BeforeAll
     static void setItem() {
@@ -40,9 +45,8 @@ class MyItemServiceImpTest {
                 .name("name")
                 .description("description")
                 .borrowed(true)
-                .bookedBy("some dude")
+                .bookedBy("someone")
                 .borrowingDate(LocalDateTime.of(2018, 5, 12, 0, 0))
-                .dueDate(LocalDateTime.of(2018, 5, 17, 0, 0))
                 .borrowingLimit(10)
                 .build();
 
@@ -50,7 +54,18 @@ class MyItemServiceImpTest {
                 .id("xx-xx-xx")
                 .firstName("name")
                 .lastName("last")
-                .email("some dude")
+                .email("someone")
+                .build();
+
+        logEntry = LogEntry.builder()
+                .id("xx-xx")
+                .borrowerName("name last")
+                .borrowerId("xx-xx-xx")
+                .nameOfBorrowedItem("name")
+                .descriptionOfBorrowedItem("description")
+                .idOfBorrowedItem("xx-xx-xx-xx")
+                .dateOfBorrowing(LocalDateTime.now())
+                .operationOnGoing(true)
                 .build();
     }
 
@@ -59,6 +74,7 @@ class MyItemServiceImpTest {
     void returnItem() {
         Mockito.when(loggedInUserUtility.getLoggedOnUser()).thenReturn(user);
         itemRepository.save(item);
+        logEntryRepository.save(logEntry);
 
         List<Item> tryOne = itemRepository.findAllByBookedBy(item.getBookedBy());
         assertEquals(1, tryOne.size());
@@ -68,8 +84,8 @@ class MyItemServiceImpTest {
         List<Item> tryTwo = itemRepository.findAllByBookedBy(item.getBookedBy());
         assertEquals(0, tryTwo.size());
 
-        Item actual = itemRepository.findById(MyItemServiceImpTest.item.getId()).get();
-        Item expected = Item.builder()
+        Item actualItem = itemRepository.findById(MyItemServiceImpTest.item.getId()).get();
+        Item expectedItem = Item.builder()
                 .id("xx-xx-xx-xx")
                 .name("name")
                 .description("description")
@@ -80,29 +96,17 @@ class MyItemServiceImpTest {
                 .borrowingLimit(10)
                 .build();
 
-        assertEquals(expected, actual);
+        assertEquals(expectedItem, actualItem);
 
+        LogEntry actualLogEntry = logEntryRepository.findByBorrowerIdAndIdOfBorrowedItemAndOperationOnGoing
+                (user.getId(), item.getId(), false).get();
+        logEntry.setDateOfReturn(actualLogEntry.getDateOfReturn());
+        logEntry.setOperationOnGoing(false);
+
+        assertEquals(logEntry, actualLogEntry);
+
+        logEntryRepository.delete(MyItemServiceImpTest.logEntry);
         itemRepository.delete(item);
-    }
-
-    @Test
-    @WithMockUser("someone")
-    void createLogEntry() {
-        Mockito.when(loggedInUserUtility.getLoggedOnUser()).thenReturn(user);
-
-        LogEntry actual = myItemServiceImp.createLogEntry(item);
-        LogEntry expected = LogEntry.builder()
-                .borrowerName(user.getFirstName() + " " + user.getLastName())
-                .borrowerId(user.getId())
-                .nameOfBorrowedItem(item.getName())
-                .descriptionOfBorrowedItem(item.getDescription())
-                .idOfBorrowedItem(item.getId())
-                .dateOfBorrowing(item.getBorrowingDate())
-                .dateOfReturn(actual.getDateOfReturn())
-                .operationOnGoing(false)
-                .build();
-
-        assertEquals(expected, actual);
     }
 
 }

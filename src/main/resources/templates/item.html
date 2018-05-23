@@ -23,11 +23,7 @@
         <input type="hidden" th:value="${item.name}" name="name"/>
         <input type="hidden" th:value="${item.description}" name="description"/>
         <input type="hidden" th:value="${item.borrowingLimit}" name="borrowingLimit"/>
-        <p>
-            <label>Date of return: </label>
-            <input th:field="*{dueDate}" th:text="${#temporals.format(now, 'dd/MMM/yyyy HH:mm')}">
-        </p>
-            <button type="submit">Book</button>
+        <button type="submit">Book</button>
     </form>
 </div>
 </body>
