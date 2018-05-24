@@ -3,23 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<h2>Register with Username and Password</h2>
 
-<form action="/login" method="get">
-    <input type="submit" value="Login"/>
-</form>
 
-<form th:action="@{/register}" th:object="${newUser}" method="POST">
-    <fieldset>
-        <input th:field="*{firstName}" type="text" placeholder="First name" autofocus="autofocus"><br>
-        <input th:field="*{lastName}" type="text" placeholder="Last name"><br>
-        <input th:field="*{email}" type="email" placeholder="Email" /><br>
-        <input th:field="*{password}" name="password" type="password" placeholder="Password"/><br>
-        <input th:field="*{matchingPassword}" name="repeated" type="password" placeholder="Repeat password"/><br>
+<form th:action="@{/register}" th:object="${newUser}" method="POST"  class="from-style">
+    <h2>Register with Email and Password</h2>
+
+    <div th:if="${param.error}" class="alert alert-danger fade in">
+        <strong>Error!</strong> There was an error, please try again.
+    </div>
+
+    <div th:if="${param.registered}" class="alert alert-success fade in">
+        <strong>Success!</strong> You have been Registered.
+    </div>
+
+    <fieldset class="no-border">
+        <div class="input-container">
+            <i class="fa fa-user icon"></i>
+            <input class="input-field" th:field="*{firstName}" type="text" placeholder="First name" autofocus="autofocus"><br>
+        </div>
+        <div class="input-container">
+            <i class="fa fa-user icon"></i>
+            <input class="input-field" th:field="*{lastName}" type="text" placeholder="Last name"><br>
+        </div>
+        <div class="input-container">
+            <i class="fa fa-envelope icon"></i>
+            <input class="input-field" th:field="*{email}" type="email" placeholder="Email"/><br>
+        </div>
+        <div class="input-container">
+            <i class="fa fa-key icon"></i>
+            <input class="input-field" th:field="*{password}" name="password" type="password" placeholder="Password"/><br>
+        </div>
+        <div class="input-container">
+            <i class="fa fa-key icon"></i>
+            <input class="input-field" th:field="*{matchingPassword}" name="repeated" type="password" placeholder="Repeat password"/><br>
+        </div>
     </fieldset>
     <input type="submit" value="Register" class="btn btn-primary"/>
 </form>
+<br/><br/>
+<div class=" signin">
+    <br/>
+    <form action="/login" method="get">
+        <label for="submit">Do you have an account?&nbsp;&nbsp;</label>
+        <input type="submit" id="submit" class="btn-login" value="Login"/>
+    </form>
+
+    <br/>
+</div>
+
+
 </body>
 </html>

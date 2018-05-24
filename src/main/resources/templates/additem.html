@@ -10,7 +10,10 @@
 </header>
 <div class="content">
     <h3>Add New Item</h3>
-
+    <div th:if="${param.success}" class="alert alert-success fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Success!</strong> New item have been added.
+    </div>
     <form name="form" th:action="@{/additem}" th:object="${newItem}" enctype="multipart/form-data" method="POST">
         <fieldset>
             <input type="text" th:field="*{name}" name="name" placeholder="Item Name" autofocus="autofocus"/> <br>
