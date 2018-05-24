@@ -1,4 +1,4 @@
-package at.refugeescode.rcstore.controller.endpoints;
+package at.refugeescode.rcstore.controller.view;
 
 import at.refugeescode.rcstore.controller.logic.BookingService;
 import at.refugeescode.rcstore.models.Item;
@@ -12,14 +12,15 @@ import javax.annotation.security.RolesAllowed;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/bookitem")
-public class BookItem {
+public class BookItemController {
 
     private final BookingService bookingService;
 
     @PostMapping
     @RolesAllowed("ROLE_USER")
     public String book(Item item) {
-        return bookingService.book(item);
+        bookingService.book(item);
+        return "redirect:/";
     }
 
 }

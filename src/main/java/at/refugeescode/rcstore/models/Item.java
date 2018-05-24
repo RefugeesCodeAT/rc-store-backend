@@ -33,6 +33,5 @@ public class Item {
     private Boolean borrowed;
     private String bookedBy;
     private LocalDateTime borrowingDate;
-    private LocalDateTime dueDate;
 
 }

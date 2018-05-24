@@ -4,6 +4,6 @@ import at.refugeescode.rcstore.models.Item;
 
 public interface BookingService {
 
-    String book(Item item);
+    void book(Item item);
 
 }

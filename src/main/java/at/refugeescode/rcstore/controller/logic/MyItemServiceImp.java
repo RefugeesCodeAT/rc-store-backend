@@ -7,8 +7,6 @@ import at.refugeescode.rcstore.persistence.ItemRepository;
 import at.refugeescode.rcstore.persistence.LogEntryRepository;
 import at.refugeescode.rcstore.security.LoggedInUserUtility;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,31 +29,22 @@ public class MyItemServiceImp implements MyItemService {
     @Override
     public void returnItem(String id) {
         Item item = itemRepository.findById(id).get();
-        logReturnEntryFor(item);
+        User user = loggedInUserUtility.getLoggedOnUser();
+        updateLogEntry(item, user);
         item.setBorrowed(false);
         item.setBookedBy(null);
-        item.setDueDate(null);
         item.setBorrowingDate(null);
         itemRepository.save(item);
     }
 
-    private void logReturnEntryFor(Item item) {
-        LogEntry logEntry = createLogEntry(item);
-        logEntryRepository.save(logEntry);
-    }
+    private void updateLogEntry(Item item, User user) {
+        LogEntry logEntry = logEntryRepository.findByBorrowerIdAndIdOfBorrowedItemAndOperationOnGoing
+                (user.getId(), item.getId(), true).get();
 
-    LogEntry createLogEntry(Item item) {
-        User user = loggedInUserUtility.getLoggedOnUser();
-        return LogEntry.builder()
-                .borrowerName(user.getFirstName() + " " + user.getLastName())
-                .borrowerId(user.getId())
-                .nameOfBorrowedItem(item.getName())
-                .descriptionOfBorrowedItem(item.getDescription())
-                .idOfBorrowedItem(item.getId())
-                .dateOfBorrowing(item.getBorrowingDate())
-                .dateOfReturn(LocalDateTime.now())
-                .operationOnGoing(false)
-                .build();
+        logEntry.setOperationOnGoing(false);
+        logEntry.setDateOfReturn(LocalDateTime.now());
+
+        logEntryRepository.save(logEntry);
     }
 
 }

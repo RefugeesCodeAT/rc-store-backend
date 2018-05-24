@@ -5,7 +5,9 @@
     <title>Add New Item</title>
 </head>
 <body>
-<a href="/">Go Home</a><br>
+<header>
+    <object th:include="fragments/navigation :: menu" th:remove="tag"></object>
+</header>
 <div class="content">
     <h3>Add New Item</h3>
     <div th:if="${param.success}" class="alert alert-success fade in">

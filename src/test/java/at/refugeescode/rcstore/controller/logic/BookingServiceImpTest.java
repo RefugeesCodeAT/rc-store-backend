@@ -1,19 +1,21 @@
 package at.refugeescode.rcstore.controller.logic;
 
 import at.refugeescode.rcstore.models.Item;
-import org.junit.jupiter.api.Assertions;
+import at.refugeescode.rcstore.models.User;
+import at.refugeescode.rcstore.security.LoggedInUserUtility;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -21,7 +23,10 @@ class BookingServiceImpTest {
 
     @Autowired
     private BookingServiceImp bookingServiceImp;
+    @MockBean
+    private LoggedInUserUtility loggedInUserUtility;
     private static Item item;
+    private static User user;
 
     @BeforeAll
     static void setItem() {
@@ -31,35 +36,33 @@ class BookingServiceImpTest {
                 .borrowed(false)
                 .bookedBy("")
                 .borrowingDate(LocalDateTime.of(2018, 5, 12, 0, 0))
-                .dueDate(LocalDateTime.of(2018, 5, 17, 0, 0))
                 .borrowingLimit(1)
                 .build();
-    }
 
-    @Test
-    void isWithinBorrowingLimit() {
-        boolean resultOne = bookingServiceImp.isWithinBorrowingLimit(item);
-        assertFalse(resultOne);
-        item.setBorrowingLimit(10);
-        boolean resultTwo = bookingServiceImp.isWithinBorrowingLimit(item);
-        assertTrue(resultTwo);
+        user = User.builder()
+                .id("xx-xx-xx")
+                .firstName("name")
+                .lastName("last")
+                .email("someone")
+                .build();
     }
 
     @Test
     @WithMockUser("someone")
     void setBorrowingInfo() {
+        Mockito.when(loggedInUserUtility.getLoggedOnUser()).thenReturn(user);
+        bookingServiceImp.setBorrowingInfo(item, user);
+
         Item result = Item.builder()
                 .name("name")
                 .description("description")
                 .borrowed(true)
                 .bookedBy("someone")
-                .borrowingDate(LocalDateTime.of(2018, 5, 12, 0, 0))
-                .dueDate(LocalDateTime.of(2018, 5, 17, 0, 0))
+                .borrowingDate(item.getBorrowingDate())
                 .borrowingLimit(1)
                 .build();
 
-        bookingServiceImp.setBorrowingInfo(item);
-        Assertions.assertEquals(item, result);
+        assertEquals(item, result);
     }
 
 }
