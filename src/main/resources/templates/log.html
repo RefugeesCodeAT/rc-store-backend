@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Borrowing Log</title>
+</head>
+<body>
+<header>
+    <object th:include="fragments/navigation :: menu" th:remove="tag"></object>
+</header>
+<h2>Borrowing Log</h2>
+<table th:if="${not #lists.isEmpty(logEntries)}">
+    <thead>
+    <tr>
+        <th>Borrower Name</th>
+        <th>Item Name</th>
+        <th>Description</th>
+        <th>From Date</th>
+        <th>Return Date</th>
+        <th>Returned?</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="logEntry : ${logEntries}">
+        <td th:text="${logEntry.borrowerName}">Borrower Name</td>
+        <td th:text="${logEntry.nameOfBorrowedItem}">Item Name</td>
+        <td th:text="${logEntry.descriptionOfBorrowedItem}">Item Description</td>
+        <td th:text="${logEntry.dateOfBorrowing}">From Date</td>
+        <td th:text="${logEntry.dateOfReturn}">Return Date</td>
+        <td th:text="${logEntry.operationOnGoing}">Still not returned?</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
