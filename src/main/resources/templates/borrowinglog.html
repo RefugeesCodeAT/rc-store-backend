@@ -19,13 +19,13 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="borrow : ${borrows}">
-        <td th:text="${borrow.borrowerName}">Sadra</td>
-        <td th:text="${borrow.itemName}">Book (Java)</td>
-        <td th:text="${borrow.itemDescription}">java 8 manual</td>
-        <td th:text="${borrow.returnDate}">2018/02/21</td>
-        <td th:text="${borrow.fromDate}">2018/02/11</td>
-        <td th:text="${borrow.isReturned}">true</td>
+    <tr th:each="logEntry : ${logEntries}">
+        <td th:text="${logEntry.borrowerName}">Sadra</td>
+        <td th:text="${logEntry.itemName}">Book (Java)</td>
+        <td th:text="${logEntry.itemDescription}">java 8 manual</td>
+        <td th:text="${logEntry.returnDate}">2018/02/21</td>
+        <td th:text="${logEntry.fromDate}">2018/02/11</td>
+        <td th:text="${logEntry.isReturned}">true</td>
     </tr>
     </tbody>
 </table>
