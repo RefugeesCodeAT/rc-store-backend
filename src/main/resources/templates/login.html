@@ -1,26 +1,45 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<div class="content">
-    <p th:if="${param.error}" class="alert alert-error">There was an error, please try again</p>
-    <p th:if="${param.logout}" class="alert alert-error">You have been Logged out.</p>
-    <h2>Login with Username and Password</h2>
+<form th:action="@{/login}" method="post" class="from-style">
+    <fieldset class="no-border">
+        <h2>Login Form</h2>
 
+        <div th:if="${param.error}" class="alert alert-danger fade in">
+            <strong>Error!</strong> There was an error, please try again.
+        </div>
+
+        <div th:if="${param.logout}" class="alert alert-success fade in">
+            <strong>Success!</strong> You have been logged out.
+        </div>
+
+        <div class="input-container">
+            <i class="fa fa-envelope icon"></i>
+            <input class="input-field" type="text" placeholder="Email" name="username" autofocus="autofocus" required>
+        </div>
+        <div class="input-container">
+            <i class="fa fa-key icon"></i>
+            <input class="input-field" type="password" placeholder="Password" name="password" required>
+        </div>
+    </fieldset>
+    <button type="submit" id="login" value="Login" class="btn">Login</button>
+</form>
+
+<br/><br/>
+<div class=" signin">
+    <br/>
     <form action="/register" method="get">
-        <input type="submit" value="Register"/>
+        <label for="submit">Don't have an account?&nbsp;&nbsp;</label>
+        <input type="submit" id="submit" class="btn-register" value="Register"/>
     </form>
 
-    <form name="form" th:action="@{/login}" action="/login" method="POST">
-        <fieldset>
-            <input type="text" name="username" placeholder="Email" autofocus="autofocus"/><br>
-            <input type="password" name="password" placeholder="Password"/>
-        </fieldset>
-        <input type="submit" id="login" value="Login" class="btn btn-primary"/>
-    </form>
+    <br/>
 </div>
+
 </body>
 </html>
