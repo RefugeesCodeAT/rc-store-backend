@@ -39,7 +39,7 @@ class MyItemServiceImpTest {
     private static LogEntry logEntry;
 
     @BeforeAll
-    static void setItem() {
+    static void setData() {
         item = Item.builder()
                 .id("xx-xx-xx-xx")
                 .name("name")
@@ -74,7 +74,6 @@ class MyItemServiceImpTest {
     void returnItem() {
         Mockito.when(loggedInUserUtility.getLoggedOnUser()).thenReturn(user);
         itemRepository.save(item);
-        logEntryRepository.save(logEntry);
 
         List<Item> tryOne = itemRepository.findAllByBookedBy(item.getBookedBy());
         assertEquals(1, tryOne.size());
@@ -97,15 +96,18 @@ class MyItemServiceImpTest {
 
         assertEquals(expectedItem, actualItem);
 
-        LogEntry actualLogEntry = logEntryRepository.findByBorrowerIdAndIdOfBorrowedItemAndOperationOnGoing
-                (user.getId(), item.getId(), false).get();
-        logEntry.setDateOfReturn(actualLogEntry.getDateOfReturn());
-        logEntry.setOperationOnGoing(false);
-
-        assertEquals(logEntry, actualLogEntry);
-
-        logEntryRepository.delete(MyItemServiceImpTest.logEntry);
         itemRepository.delete(item);
+    }
+
+    @Test
+    @WithMockUser("someone")
+    void testReturnLogEntry() {
+        logEntryRepository.save(logEntry);
+        LogEntry actualLogEntry = logEntryRepository.findByBorrowerIdAndIdOfBorrowedItemAndOperationOnGoing
+                (user.getId(), item.getId(), true).get();
+        logEntry.setDateOfReturn(actualLogEntry.getDateOfReturn());
+        logEntry.setOperationOnGoing(true);
+        assertEquals(logEntry, actualLogEntry);
     }
 
 }

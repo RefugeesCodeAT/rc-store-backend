@@ -1,7 +1,9 @@
 package at.refugeescode.rcstore.controller.logic;
 
 import at.refugeescode.rcstore.models.Item;
+import at.refugeescode.rcstore.models.LogEntry;
 import at.refugeescode.rcstore.models.User;
+import at.refugeescode.rcstore.persistence.LogEntryRepository;
 import at.refugeescode.rcstore.security.LoggedInUserUtility;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -63,6 +65,25 @@ class BookingServiceImpTest {
                 .build();
 
         assertEquals(item, result);
+    }
+
+    @Test
+    @WithMockUser("someone")
+    void testBookingLogEntry() {
+        LogEntry actualLogEntry = bookingServiceImp.createLogEntry(item, user);
+        LogEntry expected = LogEntry.builder()
+                .id(actualLogEntry.getId())
+                .borrowerName(user.getFirstName() + " " + user.getLastName())
+                .borrowerId(user.getId())
+                .nameOfBorrowedItem(item.getName())
+                .descriptionOfBorrowedItem(item.getDescription())
+                .idOfBorrowedItem(item.getId())
+                .dateOfBorrowing(LocalDateTime.now())
+                .operationOnGoing(true)
+                .dateOfBorrowing(actualLogEntry.getDateOfBorrowing())
+                .build();
+
+        assertEquals(expected, actualLogEntry);
     }
 
 }
