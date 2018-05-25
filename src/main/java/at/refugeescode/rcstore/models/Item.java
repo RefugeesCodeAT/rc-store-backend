@@ -26,7 +26,7 @@ public class Item {
     @NotNull
     @NotEmpty
     private String description;
-    private byte[] image;
+    private String imageID;
     @NotNull
     @NotEmpty
     private int borrowingLimit;
