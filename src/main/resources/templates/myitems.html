@@ -5,14 +5,15 @@
     <title>My Items</title>
 </head>
 <body>
-<a href="/">Go Home</a><br>
+<header>
+    <object th:include="fragments/navigation :: menu" th:remove="tag"></object>
+</header>
 <table th:if="${not #lists.isEmpty(myitems)}">
     <thead>
     <tr>
         <th>Name</th>
         <th>Description</th>
         <th>Borrowing Date</th>
-        <th>Due Date</th>
         <th> </th>
     </tr>
     </thead>
@@ -21,7 +22,6 @@
         <td th:text="${item.name}">Book (Java)</td>
         <td th:text="${item.description}">java 8 manual</td>
         <td th:text="${item.borrowingDate}">2018/02/11</td>
-        <td th:text="${item.dueDate}">2018/02/21</td>
         <td>
             <form th:action="@{/myitems/{id} (id=${item.id})}" method="GET">
                 <input type="submit" id="return" value="Return" class="btn btn-primary"/>

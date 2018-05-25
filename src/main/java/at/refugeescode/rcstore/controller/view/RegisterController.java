@@ -1,4 +1,4 @@
-package at.refugeescode.rcstore.controller.endpoints;
+package at.refugeescode.rcstore.controller.view;
 
 import at.refugeescode.rcstore.controller.logic.RegisterService;
 import at.refugeescode.rcstore.models.UserDto;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/register")
-public class Register {
+public class RegisterController {
 
     private final RegisterService registerService;
 

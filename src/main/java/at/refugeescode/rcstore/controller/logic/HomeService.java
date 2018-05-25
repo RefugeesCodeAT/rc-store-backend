@@ -8,4 +8,6 @@ public interface HomeService {
 
     List<Item> getItems();
 
+    boolean isUserAdmin();
+
 }

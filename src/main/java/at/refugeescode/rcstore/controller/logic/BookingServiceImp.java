@@ -7,11 +7,9 @@ import at.refugeescode.rcstore.persistence.ItemRepository;
 import at.refugeescode.rcstore.persistence.LogEntryRepository;
 import at.refugeescode.rcstore.security.LoggedInUserUtility;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -22,35 +20,27 @@ public class BookingServiceImp implements BookingService {
     private final LoggedInUserUtility loggedInUserUtility;
 
     @Override
-    public String book(Item item) {
-        if (isWithinBorrowingLimit(item)) {
-            setBorrowingInfo(item);
-            createLogEntry(item);
-            itemRepository.save(item);
-        }
-        return "redirect:/";
+    public void book(Item item) {
+        User loggedOnUser = loggedInUserUtility.getLoggedOnUser();
+        setBorrowingInfo(item, loggedOnUser);
+        createLogEntry(item, loggedOnUser);
+        itemRepository.save(item);
     }
 
-    boolean isWithinBorrowingLimit(Item item) {
-        return Duration.between(item.getBorrowingDate(), item.getDueDate()).abs().toDays() <= item.getBorrowingLimit();
-    }
-
-    void setBorrowingInfo(Item item) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        item.setBookedBy(authentication.getName());
+    void setBorrowingInfo(Item item, User loggedOnUser) {
+        item.setBorrowingDate(LocalDateTime.now());
+        item.setBookedBy(loggedOnUser.getEmail());
         item.setBorrowed(true);
     }
 
-    private void createLogEntry(Item item) {
-        User user = loggedInUserUtility.getLoggedOnUser();
+    private void createLogEntry(Item item, User loggedOnUser) {
         LogEntry logEntry = LogEntry.builder()
-                .borrowerName(user.getFirstName() + " " + user.getLastName())
-                .borrowerId(user.getId())
+                .borrowerName(loggedOnUser.getFirstName() + " " + loggedOnUser.getLastName())
+                .borrowerId(loggedOnUser.getId())
                 .nameOfBorrowedItem(item.getName())
                 .descriptionOfBorrowedItem(item.getDescription())
                 .idOfBorrowedItem(item.getId())
-                .dateOfBorrowing(item.getBorrowingDate())
-                .dateOfReturn(item.getDueDate())
+                .dateOfBorrowing(LocalDateTime.now())
                 .operationOnGoing(true)
                 .build();
         logEntryRepository.save(logEntry);
