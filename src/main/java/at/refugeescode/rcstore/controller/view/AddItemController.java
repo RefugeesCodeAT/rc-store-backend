@@ -4,12 +4,11 @@ import at.refugeescode.rcstore.controller.logic.AddItemService;
 import at.refugeescode.rcstore.models.Item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.security.RolesAllowed;
+import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,8 +25,8 @@ public class AddItemController {
 
     @PostMapping
     @RolesAllowed("ROLE_ADMIN")
-    public String addItem(Item newItem) {
-        addItemService.add(newItem);
+    public String addItem(@RequestParam("image") MultipartFile image, Item newItem) throws IOException {
+        addItemService.add(image, newItem);
         return "additem";
     }
 

@@ -13,6 +13,7 @@
     <p>Name: <span th:text="${item.name}">Item name</span>.</p>
     <p>Description: <span th:text="${item.description}">Item description</span>.</p>
     <p>Borrowing limit: <span th:text="${item.borrowingLimit}">Item borrowing limit</span>.</p>
+    <img th:if="${item.imageID}" th:src="@{/iteminfo/images/{id} (id=${item.imageID})}"/>
     <div th:if="${item.borrowed}">
         <p>Borrower E-mail: <span th:text="${item.bookedBy}">Item booked by</span>.</p>
         <p>Borrowing date: <span th:text="${item.borrowingDate}">Item borrowing date</span>.</p>

@@ -33,7 +33,7 @@ public class BookingServiceImp implements BookingService {
         item.setBorrowed(true);
     }
 
-    private void createLogEntry(Item item, User loggedOnUser) {
+    LogEntry createLogEntry(Item item, User loggedOnUser) {
         LogEntry logEntry = LogEntry.builder()
                 .borrowerName(loggedOnUser.getFirstName() + " " + loggedOnUser.getLastName())
                 .borrowerId(loggedOnUser.getId())
@@ -44,6 +44,8 @@ public class BookingServiceImp implements BookingService {
                 .operationOnGoing(true)
                 .build();
         logEntryRepository.save(logEntry);
+
+        return logEntry;
     }
 
 }
