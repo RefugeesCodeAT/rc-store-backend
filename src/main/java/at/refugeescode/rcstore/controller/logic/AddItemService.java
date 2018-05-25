@@ -2,8 +2,8 @@ package at.refugeescode.rcstore.controller.logic;
 
 import at.refugeescode.rcstore.models.Item;
 
-public interface BookingService {
+public interface AddItemService {
 
-    void book(Item item);
+    void add(Item newItem);
 
 }

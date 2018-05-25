@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Item</title>
+</head>
+<body>
+<header>
+    <object th:include="fragments/navigation :: menu" th:remove="tag"></object>
+</header>
+<div class="content">
+    <h3>Add New Item</h3>
+    <div th:if="${param.success}" class="alert alert-success fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Success!</strong> New item have been added.
+    </div>
+    <form name="form" th:action="@{/additem}" th:object="${newItem}" enctype="multipart/form-data" method="POST">
+        <fieldset>
+            <input type="text" th:field="*{name}" name="name" placeholder="Item Name" autofocus="autofocus"/> <br>
+            <input type="text" th:field="*{description}" name="description" placeholder="Item Description"/> <br>
+            <label for="image"> Item Image</label>
+            <input type="file" th:field="*{image}" name="image" id="image" accept="image/*"/> <br>
+            <label for="image"> Item borrowing limit (between 1 and 31 days):</label>
+            <input type="number" th:field="*{borrowingLimit}" name="borrowingLimit" min="1" max="31"
+                   placeholder="Borrowing Limit"/> <br>
+        </fieldset>
+        <input type="submit" id="additem" value="Add Item" class="btn btn-primary"/>
+    </form>
+</div>
+</body>
+</html>

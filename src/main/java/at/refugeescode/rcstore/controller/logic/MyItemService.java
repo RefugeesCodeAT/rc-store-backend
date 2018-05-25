@@ -4,10 +4,10 @@ import at.refugeescode.rcstore.models.Item;
 
 import java.util.List;
 
-public interface HomeService {
+public interface MyItemService {
 
-    List<Item> getItems();
+    List<Item> getMyItems();
 
-    boolean isUserAdmin();
+    void returnItem(String id);
 
 }
