@@ -1,7 +1,7 @@
-package at.refugeescode.rcstore.controller.view;
+package at.refugeescode.rcstore.view.controller;
 
-import at.refugeescode.rcstore.controller.logic.RegisterService;
-import at.refugeescode.rcstore.models.UserDto;
+import at.refugeescode.rcstore.persistence.model.UserDto;
+import at.refugeescode.rcstore.view.logic.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,21 +14,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/register")
 public class RegisterController {
 
-    private final RegisterService registerService;
+    private final UsersService usersService;
+
+    @GetMapping
+    public String page() {
+        return "register";
+    }
 
     @ModelAttribute("newUser")
     UserDto newUser() {
         return new UserDto();
     }
 
-    @GetMapping
-    public String get() {
-        return "register";
-    }
-
     @PostMapping
-    public String post(UserDto newUser) {
-        return registerService.controlUser(newUser);
+    public String registerNewUser(UserDto newUser) {
+        Boolean registerSuccessful = usersService.register(newUser);
+        if (registerSuccessful) {
+            return "redirect:/login";
+        }
+        return "redirect:/register";
     }
 
 }

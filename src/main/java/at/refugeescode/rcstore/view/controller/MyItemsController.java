@@ -1,7 +1,8 @@
-package at.refugeescode.rcstore.controller.view;
+package at.refugeescode.rcstore.view.controller;
 
-import at.refugeescode.rcstore.controller.logic.MyItemService;
-import at.refugeescode.rcstore.models.Item;
+import at.refugeescode.rcstore.persistence.model.Item;
+import at.refugeescode.rcstore.view.logic.ItemService;
+import at.refugeescode.rcstore.view.logic.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MyItemsController {
 
-    private final MyItemService myItemService;
+    private final ItemService itemService;
+    private final UsersService usersService;
 
     @GetMapping
     @RolesAllowed("ROLE_USER")
@@ -28,14 +30,19 @@ public class MyItemsController {
     @ModelAttribute("myitems")
     @RolesAllowed("ROLE_USER")
     public List<Item> myitems() {
-        return myItemService.getMyItems();
+        return itemService.getMyItems();
     }
 
     @GetMapping("/{id}")
     @RolesAllowed("ROLE_USER")
     public String returnItem(@PathVariable String id) {
-        myItemService.returnItem(id);
+        itemService.returnItem(id);
         return "redirect:/myitems";
+    }
+
+    @ModelAttribute("admin")
+    public boolean isUserAdmin() {
+        return usersService.isLoggedOnUserAdmin();
     }
 
 }

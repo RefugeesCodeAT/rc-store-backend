@@ -1,6 +1,6 @@
 package at.refugeescode.rcstore.security;
 
-import at.refugeescode.rcstore.models.User;
+import at.refugeescode.rcstore.persistence.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

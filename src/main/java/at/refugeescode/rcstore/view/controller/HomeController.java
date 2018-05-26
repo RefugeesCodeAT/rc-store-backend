@@ -1,17 +1,15 @@
-package at.refugeescode.rcstore.controller.view;
+package at.refugeescode.rcstore.view.controller;
 
-import at.refugeescode.rcstore.controller.logic.HomeService;
-import at.refugeescode.rcstore.models.Item;
-import at.refugeescode.rcstore.security.UserPrincipal;
+import at.refugeescode.rcstore.persistence.model.Item;
+import at.refugeescode.rcstore.view.logic.ItemService;
+import at.refugeescode.rcstore.view.logic.UsersService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.security.RolesAllowed;
-import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -19,7 +17,8 @@ import java.util.List;
 @RequestMapping("/")
 public class HomeController {
 
-    private final HomeService homeService;
+    private final ItemService itemService;
+    private final UsersService usersService;
 
     @GetMapping
     @RolesAllowed("ROLE_USER")
@@ -30,12 +29,12 @@ public class HomeController {
     @ModelAttribute("items")
     @RolesAllowed("ROLE_USER")
     public List<Item> getItems() {
-        return homeService.getItems();
+        return itemService.getAllItems();
     }
 
     @ModelAttribute("admin")
     public boolean isUserAdmin() {
-        return homeService.isUserAdmin();
+        return usersService.isLoggedOnUserAdmin();
     }
 
 }

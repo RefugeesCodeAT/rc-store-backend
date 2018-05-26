@@ -1,6 +1,6 @@
 package at.refugeescode.rcstore.configuration;
 
-import at.refugeescode.rcstore.models.User;
+import at.refugeescode.rcstore.persistence.model.User;
 import at.refugeescode.rcstore.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
