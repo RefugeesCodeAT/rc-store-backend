@@ -1,8 +1,8 @@
-package at.refugeescode.rcstore.controller.logic;
+package at.refugeescode.rcstore.view.logic;
 
-import at.refugeescode.rcstore.models.User;
-import at.refugeescode.rcstore.models.UserDto;
 import at.refugeescode.rcstore.persistence.UserRepository;
+import at.refugeescode.rcstore.persistence.model.User;
+import at.refugeescode.rcstore.persistence.model.UserDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +12,17 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-class RegisterControllerServiceImpTest {
+class UsersServiceImpTest {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
-    private RegisterService registerService;
+    private UsersService usersService;
 
     @Value("${admin.email}")
     private String adminEmail;
@@ -34,8 +34,8 @@ class RegisterControllerServiceImpTest {
 
         UserDto testingUser = new UserDto();
         testingUser.setEmail(adminEmail);
-        String actualReturn = registerService.controlUser(testingUser);
-        assertEquals("redirect:/register", actualReturn);
+        Boolean actualReturn = usersService.register(testingUser);
+        assertFalse(actualReturn);
     }
 
     @Test
@@ -44,8 +44,8 @@ class RegisterControllerServiceImpTest {
         newUserDto.setMatchingPassword("same");
 
         assertFalse(userRepository.findOneByEmail(newUserDto.getEmail()).isPresent());
-        String actualReturn = registerService.controlUser(newUserDto);
-        assertEquals("redirect:/login", actualReturn);
+        Boolean actualReturn = usersService.register(newUserDto);
+        assertTrue(actualReturn);
     }
 
     @Test
@@ -54,8 +54,8 @@ class RegisterControllerServiceImpTest {
         newUserDto.setMatchingPassword("different");
 
         assertFalse(userRepository.findOneByEmail(newUserDto.getEmail()).isPresent());
-        String actualReturn = registerService.controlUser(newUserDto);
-        assertEquals("redirect:/register", actualReturn);
+        Boolean actualReturn = usersService.register(newUserDto);
+        assertFalse(actualReturn);
     }
 
     private UserDto createNewUserDto() {
@@ -70,9 +70,7 @@ class RegisterControllerServiceImpTest {
 
     private void findAndDelete(UserDto newUserDto) {
         Optional<User> optionalUser = userRepository.findOneByEmail(newUserDto.getEmail());
-        if (optionalUser.isPresent()) {
-            userRepository.delete(optionalUser.get());
-        }
+        optionalUser.ifPresent(user -> userRepository.delete(user));
     }
 
 }

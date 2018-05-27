@@ -1,9 +1,12 @@
-package at.refugeescode.rcstore.controller.logic;
+package at.refugeescode.rcstore.view.logic;
 
-import at.refugeescode.rcstore.models.User;
-import at.refugeescode.rcstore.models.UserDto;
 import at.refugeescode.rcstore.persistence.UserRepository;
+import at.refugeescode.rcstore.persistence.model.User;
+import at.refugeescode.rcstore.persistence.model.UserDto;
+import at.refugeescode.rcstore.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,29 +17,35 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class RegisterServiceImp implements RegisterService {
+public class UsersServiceImp implements UsersService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    @Override
-    public String controlUser(UserDto userDto) {
+
+    public User getLoggedOnUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        return userPrincipal.getUser();
+    }
+
+    public Boolean isLoggedOnUserAdmin() {
+        return getLoggedOnUser().getRoles().contains("ROLE_ADMIN");
+    }
+
+    public Boolean register(UserDto userDto) {
         Optional<User> optionalUser = userRepository.findOneByEmail(userDto.getEmail());
         if (optionalUser.isPresent()) {
-            return "redirect:/register";
+            return false;
         }
         if (!userDto.getPassword().equals(userDto.getMatchingPassword())) {
-            return "redirect:/register";
+            return false;
         }
-        register(userDto);
-        return "redirect:/login";
+        saveNewUserFrom(userDto);
+        return true;
     }
 
-    private void register(UserDto userDto) {
-        createNewUserFrom(userDto);
-    }
-
-    private void createNewUserFrom(UserDto userDto) {
+    private void saveNewUserFrom(UserDto userDto) {
         User newUser = User.builder().firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
                 .email(userDto.getEmail())

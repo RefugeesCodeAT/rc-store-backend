@@ -1,4 +1,4 @@
-package at.refugeescode.rcstore.models;
+package at.refugeescode.rcstore.persistence.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

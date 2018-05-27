@@ -1,7 +1,8 @@
-package at.refugeescode.rcstore.controller.view;
+package at.refugeescode.rcstore.view.controller;
 
-import at.refugeescode.rcstore.models.LogEntry;
+import at.refugeescode.rcstore.persistence.model.LogEntry;
 import at.refugeescode.rcstore.persistence.LogEntryRepository;
+import at.refugeescode.rcstore.view.logic.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,15 +17,21 @@ import java.util.List;
 public class LogController {
 
     private final LogEntryRepository logEntryRepository;
+    private final UsersService usersService;
+
+    @GetMapping
+    public String get() {
+        return "log";
+    }
 
     @ModelAttribute("logEntries")
     List<LogEntry> logEntries() {
         return logEntryRepository.findAll();
     }
 
-    @GetMapping
-    public String get() {
-        return "log";
+    @ModelAttribute("admin")
+    public boolean isUserAdmin() {
+        return usersService.isLoggedOnUserAdmin();
     }
 
 }

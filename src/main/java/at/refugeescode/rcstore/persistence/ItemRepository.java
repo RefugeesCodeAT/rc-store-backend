@@ -1,6 +1,6 @@
 package at.refugeescode.rcstore.persistence;
 
-import at.refugeescode.rcstore.models.Item;
+import at.refugeescode.rcstore.persistence.model.Item;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
