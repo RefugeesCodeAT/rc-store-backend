@@ -44,8 +44,9 @@ public class ItemServiceImp implements ItemService {
     }
 
     @Override
-    public void book(Item item) {
+    public void book(Item requestedItem) {
         User loggedOnUser = usersService.getLoggedOnUser();
+        Item item = itemRepository.findById(requestedItem.getId()).get();
         setBorrowingInfo(item, loggedOnUser);
         createLogEntry(item, loggedOnUser);
         itemRepository.save(item);

@@ -20,9 +20,6 @@
     </div>
     <form th:unless="${item.borrowed}" th:action="@{/item}" th:object="${item}" method="post">
         <input type="hidden" th:value="${item.id}" name="id"/>
-        <input type="hidden" th:value="${item.name}" name="name"/>
-        <input type="hidden" th:value="${item.description}" name="description"/>
-        <input type="hidden" th:value="${item.borrowingLimit}" name="borrowingLimit"/>
         <button type="submit">Book</button>
     </form>
 </div>
