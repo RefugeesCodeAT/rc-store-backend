@@ -35,17 +35,14 @@ class ItemServiceImpTest {
 
     private Item getItem() {
         return Item.builder()
-                .id("xx")
                 .name("name")
                 .description("description")
-                .borrowed(false)
                 .borrowingLimit(10)
                 .build();
     }
 
     private User getUser() {
         return User.builder()
-                .id("xx-xx")
                 .firstName("name")
                 .lastName("last")
                 .email("someone")
@@ -54,14 +51,10 @@ class ItemServiceImpTest {
 
     private LogEntry getLogEntry() {
         return LogEntry.builder()
-                .id("xx-xx-xx")
                 .borrowerName("name last")
-                .borrowerId("xx-xx")
                 .nameOfBorrowedItem("name")
                 .descriptionOfBorrowedItem("description")
-                .idOfBorrowedItem("xx")
                 .dateOfBorrowing(LocalDateTime.now())
-                .operationOnGoing(true)
                 .build();
     }
 
@@ -69,12 +62,14 @@ class ItemServiceImpTest {
     @WithMockUser("someone")
     void setBorrowingInfo() {
         User user = getUser();
+        user.setId("xx");
         Item item = getItem();
+        item.setId("xx-xx");
         Mockito.when(usersService.getLoggedOnUser()).thenReturn(user);
         itemServiceImp.setBorrowingInfo(item, user);
 
         Item result = Item.builder()
-                .id("xx")
+                .id("xx-xx")
                 .name("name")
                 .description("description")
                 .borrowed(true)
@@ -84,18 +79,15 @@ class ItemServiceImpTest {
                 .build();
 
         assertEquals(item, result);
-        LogEntry logEntry = logEntryRepository
-                .findByBorrowerIdAndIdOfBorrowedItemAndOperationOnGoing(user.getId(),
-                        item.getId(), true).get();
-
-        logEntryRepository.delete(logEntry);
     }
 
     @Test
     @WithMockUser("someone")
     void createLogEntry() {
         User user = getUser();
+        user.setId("yy");
         Item item = getItem();
+        item.setId("yy-yy");
         LogEntry actualLogEntry = itemServiceImp.createLogEntry(item, user);
         LogEntry expected = LogEntry.builder()
                 .id(actualLogEntry.getId())
@@ -110,13 +102,16 @@ class ItemServiceImpTest {
                 .build();
 
         assertEquals(expected, actualLogEntry);
+        logEntryRepository.delete(actualLogEntry);
     }
 
     @Test
     @WithMockUser("someone")
     void returnItem() {
         User user = getUser();
+        user.setId("cc");
         Item item = getItem();
+        item.setId("cc-cc");
         item.setBookedBy("someone");
         item.setBorrowed(true);
         item.setBorrowingDate(LocalDateTime.now());
@@ -128,15 +123,19 @@ class ItemServiceImpTest {
         assertEquals(1, tryOne.size());
 
         LogEntry logEntry = getLogEntry();
+        logEntry.setId("cc-cc-cc");
+        logEntry.setBorrowerId("cc");
+        logEntry.setIdOfBorrowedItem("cc-cc");
+        logEntry.setOperationOnGoing(true);
         logEntryRepository.save(logEntry);
-        itemServiceImp.returnItem(item.getId());
+        itemServiceImp.returnItem("cc-cc");
 
         List<Item> tryTwo = itemRepository.findAllByBookedBy(item.getBookedBy());
         assertEquals(0, tryTwo.size());
 
         Item actualItem = itemRepository.findById(item.getId()).get();
         Item expectedItem = Item.builder()
-                .id("xx")
+                .id("cc-cc")
                 .name("name")
                 .description("description")
                 .borrowed(false)
@@ -155,19 +154,21 @@ class ItemServiceImpTest {
     @WithMockUser("someone")
     void testReturnLogEntry() {
         User user = getUser();
-        user.setId("yy-yy");
+        user.setId("vv");
         Item item = getItem();
-        item.setId("yy");
+        item.setId("vv-vv");
         LogEntry logEntry = getLogEntry();
-        logEntry.setId("yyy");
-        logEntry.setBorrowerId(user.getId());
-        logEntry.setIdOfBorrowedItem(item.getId());
+        logEntry.setId("vv-vv-vv");
+        logEntry.setBorrowerId("vv");
+        logEntry.setIdOfBorrowedItem("vv-vv");
+        logEntry.setOperationOnGoing(true);
 
         logEntryRepository.save(logEntry);
+        itemServiceImp.updateLogEntry(item, user);
         LogEntry actualLogEntry = logEntryRepository.findByBorrowerIdAndIdOfBorrowedItemAndOperationOnGoing
-                (user.getId(), item.getId(), true).get();
+                ("vv", "vv-vv", false).get();
         logEntry.setDateOfReturn(actualLogEntry.getDateOfReturn());
-        logEntry.setOperationOnGoing(true);
+        logEntry.setOperationOnGoing(false);
         assertEquals(logEntry, actualLogEntry);
         logEntryRepository.delete(logEntry);
     }

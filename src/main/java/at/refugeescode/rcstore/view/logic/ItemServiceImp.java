@@ -89,7 +89,7 @@ public class ItemServiceImp implements ItemService {
         itemRepository.save(item);
     }
 
-    private void updateLogEntry(Item item, User user) {
+    void updateLogEntry(Item item, User user) {
         LogEntry logEntry = logEntryRepository.findByBorrowerIdAndIdOfBorrowedItemAndOperationOnGoing
                 (user.getId(), item.getId(), true).get();
 
