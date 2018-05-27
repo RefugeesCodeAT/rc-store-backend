@@ -1,35 +1,48 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <title>Logs</title>
     <meta charset="UTF-8">
-    <title>Borrowing Log</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<header>
-    <object th:include="fragments/navigation :: menu" th:remove="tag"></object>
+<header class="text-white">
+    <object th:include="fragments/nav :: menu" th:remove="tag"></object>
 </header>
-<h2>Borrowing Log</h2>
-<table th:if="${not #lists.isEmpty(logEntries)}">
-    <thead>
-    <tr>
-        <th>Borrower Name</th>
-        <th>Item Name</th>
-        <th>Description</th>
-        <th>From Date</th>
-        <th>Return Date</th>
-        <th>Returned?</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="logEntry : ${logEntries}">
-        <td th:text="${logEntry.borrowerName}">Borrower Name</td>
-        <td th:text="${logEntry.nameOfBorrowedItem}">Item Name</td>
-        <td th:text="${logEntry.descriptionOfBorrowedItem}">Item Description</td>
-        <td th:text="${logEntry.dateOfBorrowing}">From Date</td>
-        <td th:text="${logEntry.dateOfReturn}">Return Date</td>
-        <td th:text="${logEntry.operationOnGoing}">Still not returned?</td>
-    </tr>
-    </tbody>
-</table>
+<div class="w3-padding-large" id="main">
+    <div th:if="${not #lists.isEmpty(logEntries)}" class="w3-container">
+        <h2>Logs</h2>
+        <p class="w3-xlarge">History of Booking Progress:</p>
+        <table th:if="${not #lists.isEmpty(logEntries)}">
+            <thead>
+            <tr>
+                <th class="center">Borrower Name</th>
+                <th class="center">Item Name</th>
+                <th class="center">Description</th>
+                <th class="center">From Date</th>
+                <th class="center">Return Date</th>
+                <th class="center">Returned</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="logEntry : ${logEntries}" class="w3-ul w3-card-4">
+                <td th:text="${logEntry.borrowerName}">Borrower Name</td>
+                <td th:text="${logEntry.nameOfBorrowedItem}">Item Name</td>
+                <td th:text="${logEntry.descriptionOfBorrowedItem}">Item Description</td>
+                <td th:text="${logEntry.dateOfBorrowing}">From Date</td>
+                <td th:text="${logEntry.dateOfReturn}">Return Date</td>
+                <td th:if="${logEntry.operationOnGoing}==true">No</td>
+                <td th:if="${logEntry.operationOnGoing}==false">Yes</td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
 </body>
 </html>
