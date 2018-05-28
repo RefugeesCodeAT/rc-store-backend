@@ -6,7 +6,7 @@
 </head>
 <body>
 <header>
-    <object th:include="fragments/navigation :: menu" th:remove="tag"></object>
+    <object th:include="fragments/nav :: menu" th:remove="tag"></object>
 </header>
 <div th:object="${item}">
     <p th:if="${param.error}" class="alert alert-error">There was an error, please try again</p>
