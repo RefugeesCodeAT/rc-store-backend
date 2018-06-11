@@ -149,3 +149,9 @@ body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
 td, th {
     padding: 5px;
 }
+.width50p{
+    width:50% !important
+}
+.width80p{
+    width:80% !important
+}
