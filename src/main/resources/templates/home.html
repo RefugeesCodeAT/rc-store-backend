@@ -1,34 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <title>Home - All Items</title>
     <meta charset="UTF-8">
-    <title>All Items</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<header>
-    <object th:include="fragments/navigation :: menu" th:remove="tag"></object>
+<header class="text-white">
+    <object th:include="fragments/nav :: menu" th:remove="tag"></object>
 </header>
-<table th:if="${not #lists.isEmpty(items)}">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Borrowing Limit (Days)</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="item : ${items}">
-        <td th:text="${item.name}">Item name</td>
-        <td th:text="${item.description}">Item description</td>
-        <td th:text="${item.borrowingLimit}">Item borrowing limit</td>
-        <td>
-            <form th:action="@{/item/{id} (id=${item.id})}" method="GET">
-                <input type="submit" id="view" value="View" class="btn btn-primary"/>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="w3-padding-large" id="main">
+    <div th:if="${not #lists.isEmpty(items)}" class="w3-container">
+        <h2>My Items</h2>
+        <p class="w3-xlarge">The available items in RC-Store:</p>
+        <ul th:each="item : ${items}" class="w3-ul w3-card-4 margin10">
+            <li class="w3-bar">
+                <span class="w3-bar-item w3-button w3-white  w3-right">
+                    <form th:action="@{/item/{id} (id=${item.id})}" method="GET">
+                        <input type="submit" id="view" value="View" class="btn btn-primary"/>
+                    </form>
+                </span>
+                <div class="w3-bar-item">
+                    <span class="w3-large text-blue"><span th:text="${item.name}">Item name</span></span><br>
+                    <span th:text="${item.description}">Item description</span><br>
+                    <span><span th:text="${item.borrowingLimit}">Item borrowing limit</span> Days</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
 </body>
 </html>

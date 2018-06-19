@@ -1,30 +1,54 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <title>Add Item</title>
     <meta charset="UTF-8">
-    <title>Item Information</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
 <header>
-    <object th:include="fragments/navigation :: menu" th:remove="tag"></object>
+    <object th:include="fragments/nav :: menu" th:remove="tag"></object>
 </header>
-<div th:object="${item}">
-    <p th:if="${param.error}" class="alert alert-error">There was an error, please try again</p>
-    <p>Name: <span th:text="${item.name}">Item name</span>.</p>
-    <p>Description: <span th:text="${item.description}">Item description</span>.</p>
-    <p>Borrowing limit: <span th:text="${item.borrowingLimit}">Item borrowing limit</span>.</p>
-    <img th:if="${item.imageID}" th:src="@{/item/images/{id} (id=${item.imageID})}"/>
-    <div th:if="${item.borrowed}">
-        <p>Borrower E-mail: <span th:text="${item.bookedBy}">Item booked by</span>.</p>
-        <p>Borrowing date: <span th:text="${item.borrowingDate}">Item borrowing date</span>.</p>
+<div class="w3-padding-large" id="main">
+
+    <div th:if="${param.error}" class="alert alert-danger fade in">
+        <strong>Error!</strong> There was an error, please try again.
     </div>
-    <form th:unless="${item.borrowed}" th:action="@{/item}" th:object="${item}" method="post">
-        <input type="hidden" th:value="${item.id}" name="id"/>
-        <input type="hidden" th:value="${item.name}" name="name"/>
-        <input type="hidden" th:value="${item.description}" name="description"/>
-        <input type="hidden" th:value="${item.borrowingLimit}" name="borrowingLimit"/>
-        <button type="submit">Book</button>
-    </form>
+
+    <div class="w3-container" th:object="${item}">
+        <div class="w3-container w3-blue width50p">
+            <h2>Show Item</h2>
+        </div>
+        <br/>
+        <div class="w3-card-2 w3-light-grey width50p">
+            <div class="w3-container w3-center">
+                <h3 th:text="${item.name}">Item name</h3>
+                <img th:if="${item.imageID}" th:src="@{/item/images/{id} (id=${item.imageID})}" alt="Item Pic" class="width80p"/>
+                <h5><span th:text="${item.description}">Item description</span></h5>
+                <p>Borrowing limit: <span th:text="${item.borrowingLimit}" class="w3-bold">Item borrowing limit</span>.</p>
+                <div th:if="${item.borrowed}">
+                    <p>Borrower E-mail: <span th:text="${item.bookedBy}">Item booked by</span>.</p>
+                    <p>Borrowing date: <span th:text="${item.borrowingDate}">Item borrowing date</span>.</p>
+                </div>
+
+                <div class="w3-section" th:unless="${item.borrowed}">
+                    <form  th:action="@{/item}" th:object="${item}" method="post">
+                        <input type="hidden" th:value="${item.id}" name="id"/>
+                        <input type="hidden" th:value="${item.name}" name="name"/>
+                        <input type="hidden" th:value="${item.description}" name="description"/>
+                        <input type="hidden" th:value="${item.borrowingLimit}" name="borrowingLimit"/>
+                        <button type="submit" class="w3-button w3-teal width50p">Book</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 </body>
 </html>

@@ -1,31 +1,48 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <title>Add Item</title>
     <meta charset="UTF-8">
-    <title>Add New Item</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<header>
-    <object th:include="fragments/navigation :: menu" th:remove="tag"></object>
+<header class="text-white">
+    <object th:include="fragments/nav :: menu" th:remove="tag"></object>
 </header>
-<div class="content">
-    <h3>Add New Item</h3>
+<div class="w3-padding-large" id="main">
     <div th:if="${param.success}" class="alert alert-success fade in">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>Success!</strong> New item have been added.
+        <strong>Success!</strong> New item has been added.
     </div>
-    <form name="form" th:action="@{/additem}" th:object="${newItem}" enctype="multipart/form-data" method="POST">
-        <fieldset>
-            <input type="text" th:field="*{name}" name="name" placeholder="Item Name" autofocus="autofocus"/> <br>
-            <input type="text" th:field="*{description}" name="description" placeholder="Item Description"/> <br>
-            <label for="image"> Item Image</label>
-            <input type="file" name="image" id="image" accept="image/*"/> <br>
-            <label for="image"> Item borrowing limit (between 1 and 31 days):</label>
-            <input type="number" th:field="*{borrowingLimit}" name="borrowingLimit" min="1" max="31"
-                   placeholder="Borrowing Limit"/> <br>
-        </fieldset>
-        <input type="submit" id="additem" value="Add Item" class="btn btn-primary"/>
-    </form>
+
+
+    <div class="w3-card-4">
+        <div class="w3-container m-7 w3-blue">
+            <h2>Add Item</h2>
+        </div>
+        <form class="w3-container" name="form" th:action="@{/additem}" th:object="${newItem}" enctype="multipart/form-data" method="POST">
+            <br>
+            <fieldset>
+                <input class="w3-input w3-border " type="text" th:field="*{name}" name="name" placeholder="Item Name" autofocus="autofocus"/> <br>
+                <input class="w3-input w3-border " type="text" th:field="*{description}" name="description" placeholder="Item Description"/> <br>
+                <label class="w3-text-blue" for="image"> Item Image</label>
+                <input class="w3-input w3-border " type="file" name="image" id="image" accept="image/*"/> <br>
+                <label class="w3-text-blue" for="image"> Item borrowing limit (between 1 and 31 days):</label>
+                <input class="w3-input w3-border " type="number" th:field="*{borrowingLimit}" name="borrowingLimit" min="1" max="31"
+                       placeholder="Borrowing Limit"/> <br>
+            </fieldset>
+            <input  class="w3-btn w3-blue" type="submit" id="additem" value="Add Item" />
+            <br>
+        </form>
+    </div>
+
+
+
 </div>
 </body>
 </html>
